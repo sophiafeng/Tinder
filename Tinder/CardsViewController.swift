@@ -26,6 +26,7 @@ class CardsViewController: UIViewController {
         let imageView = sender.view as! DraggableImageView
         let translation = sender.translation(in: self.view)
         let location = sender.location(in: self.view)
+        let angle = Double(translation.x / 6).degreesToRadians
         
         switch sender.state {
         case .began:
@@ -34,17 +35,35 @@ class CardsViewController: UIViewController {
             break
         case .changed:
             imageView.center = CGPoint(x: (originalCenter?.x)! + translation.x, y: (originalCenter?.y)!)
-            let angle = Double(translation.x / 20).degreesToRadians
             if (location.y < imageView.center.y) {
                 imageView.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
             } else {
                 imageView.transform = CGAffineTransform(rotationAngle: CGFloat(-angle))
             }
-            
-
             break
         case .ended:
-            break
+            if translation.x > 60 {
+                UIView.animate(withDuration: 0.5, animations: {
+                    imageView.center = CGPoint(x: imageView.center.x + imageView.frame.width, y: imageView.center.y)
+                    if (location.y < imageView.center.y) {
+                        imageView.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
+                    } else {
+                        imageView.transform = CGAffineTransform(rotationAngle: CGFloat(-angle))
+                    }
+                })
+            } else if translation.x < -60 {
+                UIView.animate(withDuration: 0.5, animations: {
+                    imageView.center = CGPoint(x: imageView.center.x - imageView.frame.width, y: imageView.center.y)
+                    if (location.y < imageView.center.y) {
+                        imageView.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
+                    } else {
+                        imageView.transform = CGAffineTransform(rotationAngle: CGFloat(-angle))
+                    }
+                })
+            } else {
+                imageView.center = originalCenter!
+                imageView.transform = CGAffineTransform.identity
+            }
         default:
             break
         }
