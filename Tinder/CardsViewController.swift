@@ -10,6 +10,27 @@ import UIKit
 
 class CardsViewController: UIViewController {
 
+    var originalCenter: CGPoint?
+    
+    @IBAction func onPanGesture(_ sender: UIPanGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        let translation = sender.translation(in: self.view)
+        
+        switch sender.state {
+        case .began:
+            originalCenter = imageView.center
+            break
+        case .changed:
+            imageView.center = CGPoint(x: (originalCenter?.x)! + translation.x, y: (originalCenter?.y)!)
+            break
+        case .ended:
+            break
+        default:
+            break
+        }
+    
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
