@@ -11,9 +11,10 @@ import UIKit
 class CardsViewController: UIViewController {
 
     var originalCenter: CGPoint?
+    @IBOutlet var draggableImageView: DraggableImageView!
     
     @IBAction func onPanGesture(_ sender: UIPanGestureRecognizer) {
-        let imageView = sender.view as! UIImageView
+        let imageView = sender.view as! DraggableImageView
         let translation = sender.translation(in: self.view)
         
         switch sender.state {
@@ -34,6 +35,10 @@ class CardsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        draggableImageView.image = #imageLiteral(resourceName: "ryan")
+        
+        view.addSubview(draggableImageView)
     }
 
     override func didReceiveMemoryWarning() {
