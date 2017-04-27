@@ -35,7 +35,7 @@ class CardsViewController: UIViewController {
         case .changed:
             imageView.center = CGPoint(x: (originalCenter?.x)! + translation.x, y: (originalCenter?.y)!)
             let angle = Double(translation.x / 20).degreesToRadians
-            if (location.y > imageView.center.y) {
+            if (location.y < imageView.center.y) {
                 imageView.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
             } else {
                 imageView.transform = CGAffineTransform(rotationAngle: CGFloat(-angle))
